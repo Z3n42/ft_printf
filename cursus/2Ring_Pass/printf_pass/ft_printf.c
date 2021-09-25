@@ -6,7 +6,7 @@
 /*   By: ingonzal <ingonzal@student.42urduliz.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 18:55:56 by ingonzal          #+#    #+#             */
-/*   Updated: 2021/08/26 13:41:00 by ingonzal         ###   ########.fr       */
+/*   Updated: 2021/09/21 19:05:15 by ingonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdarg.h>
@@ -78,6 +78,6 @@ int	main(void)
 
 	a = 'a';
 	b =	1050;
-	ft_printf("mia: c%c, s%s, d%d, x%x\n", a, c, b, b);
-	printf("ori: c%c, s%s, d%d, x%x", a, c, b, b);
+	ft_printf("mia: c%c, s%s, d%d, x%x, p%p\n", a, c, b, b, 20);
+	printf("ori: c%c, s%s, d%d, x%x, p%p", a, c, b, b, 20);
 }
