@@ -82,7 +82,7 @@ After running `make`, you'll have a `printf.a` static library ready to use.
 
 ## 🚀 Usage
 
-### Including in Your Project
+### Including in Project
 
 1. **Copy ft_printf to your project directory:**
 ```bash
@@ -169,7 +169,7 @@ int count = ft_printf("Hello, %s!\n", "World");
 
 ### Core Architecture
 
-Your implementation uses a **two-function design**:
+Implementation uses a **two-function design**:
 
 #### 1. Main Function: `ft_printf()`
 ```c
@@ -386,7 +386,7 @@ OBJS = $(FILES:=.o)
 
 ### Test File Included
 
-Your `Main/mainprintf.c` contains comparison tests:
+`Main/mainprintf.c` contains comparison tests:
 
 ```c
 #include "ft_printf.h"
