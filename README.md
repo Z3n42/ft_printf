@@ -7,13 +7,13 @@
 <p>
   <img src="https://img.shields.io/badge/Score-100%2F100-success?style=for-the-badge&logo=42" alt="42 Score"/>
   <img src="https://img.shields.io/badge/Language-C-00599C?style=for-the-badge&logo=c&logoColor=white" alt="Language"/>
-  <img src="https://img.shields.io/github/license/Z3n42/ft_printf?style=for-the-badge" alt="License"/>
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"/>
   <img src="https://img.shields.io/badge/42-Urduliz-000000?style=for-the-badge&logo=42&logoColor=white" alt="42 Urduliz"/>
 </p>
 
 *A custom implementation of the printf() function, handling variadic arguments and multiple format specifiers.*
 
-[Features](#-features) • [Installation](#%EF%B8%8F-installation) • [Usage](#-usage) • [Format Specifiers](#-format-specifiers) • [Testing](#-testing)
+[Installation](#%EF%B8%8F-installation) • [Usage](#-usage) • [Format Specifiers](#-format-specifiers) • [Implementation](#-implementation-details)
 
 </div>
 
@@ -22,7 +22,6 @@
 ## 📋 Table of Contents
 
 - [About the Project](#-about-the-project)
-- [Features](#-features)
 - [Installation](#%EF%B8%8F-installation)
 - [Usage](#-usage)
 - [Format Specifiers](#-format-specifiers)
@@ -30,70 +29,22 @@
 - [Project Structure](#-project-structure)
 - [Testing](#-testing)
 - [What I Learned](#-what-i-learned)
-- [Norm Compliance](#-norm-compliance)
 - [License](#-license)
 
 ---
 
 ## 🎯 About the Project
 
-**ft_printf** is the second project in the 42 cursus, where we recreate one of C's most versatile functions: `printf()`. This project introduces **variadic functions** and teaches how to handle a variable number of arguments dynamically.
+**ft_printf** is a project from the 42 cursus where we recreate one of C's most versatile functions: `printf()`. This project introduces **variadic functions** and teaches how to handle a variable number of arguments dynamically.
 
 ### Why ft_printf?
 
-The `printf()` function is fundamental to C programming, but understanding how it works internally requires deep knowledge of:
+Understanding how `printf()` works internally requires knowledge of:
 - **Variadic functions** using `<stdarg.h>`
 - **Format string parsing** and conversion specifiers
 - **Type handling** across different data types
-- **String formatting** and output management
-- **Edge case handling** for various inputs
-
-This implementation becomes a powerful tool that can be added to your libft library for use in future 42 projects.
-
----
-
-## ✨ Features
-
-<table>
-<tr>
-<td width="50%">
-
-### 🔤 Character & String Handling
-- `%c` - Single character output
-- `%s` - String output
-- `%%` - Literal percent sign
-
-</td>
-<td width="50%">
-
-### 🔢 Numeric Conversions
-- `%d` / `%i` - Signed decimal integer
-- `%u` - Unsigned decimal integer
-- `%x` - Unsigned hexadecimal (lowercase)
-- `%X` - Unsigned hexadecimal (UPPERCASE)
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-### 🎯 Pointer Handling
-- `%p` - Pointer address in hexadecimal
-- Proper NULL pointer handling
-- Cross-platform memory address formatting
-
-</td>
-<td width="50%">
-
-### ⚡ Optimized Design
-- Variadic argument parsing
-- Dynamic format string processing
-- Return value tracking (characters printed)
-- Efficient memory usage
-
-</td>
-</tr>
-</table>
+- **Recursive number conversion** for different bases
+- **Character counting** for return value tracking
 
 ---
 
@@ -118,14 +69,14 @@ make
 # Clean object files
 make clean
 
-# Clean everything (including libftprintf.a)
+# Clean everything (including printf.a)
 make fclean
 
 # Recompile from scratch
 make re
 ```
 
-After running `make`, you'll have a `libftprintf.a` static library ready to use.
+After running `make`, you'll have a `printf.a` static library ready to use.
 
 ---
 
@@ -135,7 +86,7 @@ After running `make`, you'll have a `libftprintf.a` static library ready to use.
 
 1. **Copy ft_printf to your project directory:**
 ```bash
-cp -r ft_printf/ your_project/
+cp printf.a ft_printf.h your_project/
 ```
 
 2. **Include the header in your C files:**
@@ -145,34 +96,10 @@ cp -r ft_printf/ your_project/
 
 3. **Compile your project with ft_printf:**
 ```bash
-gcc -Wall -Wextra -Werror your_file.c -L./ft_printf -lftprintf -o your_program
+gcc -Wall -Wextra -Werror your_file.c printf.a -o your_program
 ```
 
-### Example Programs
-
-#### Basic Usage
-
-```c
-#include "ft_printf.h"
-
-int main(void)
-{
-    int     count;
-
-    // Print a simple string
-    ft_printf("Hello, World!\n");
-
-    // Print with format specifiers
-    count = ft_printf("My name is %s and I'm %d years old\n", "Iñigo", 25);
-
-    // Return value shows number of characters printed
-    ft_printf("Characters printed: %d\n", count);
-
-    return (0);
-}
-```
-
-#### All Format Specifiers
+### Example Program
 
 ```c
 #include "ft_printf.h"
@@ -180,20 +107,19 @@ int main(void)
 int main(void)
 {
     char    c = 'A';
-    char    *str = "42 School";
-    int     num = -42;
-    unsigned int u_num = 42;
+    char    *str = "Hello";
+    int     num = 42;
     void    *ptr = &num;
+    int     count;
 
-    ft_printf("Character: %c\n", c);                    // Character: A
-    ft_printf("String: %s\n", str);                     // String: 42 School
-    ft_printf("Signed int: %d\n", num);                // Signed int: -42
-    ft_printf("Signed int: %i\n", num);                // Signed int: -42
-    ft_printf("Unsigned int: %u\n", u_num);            // Unsigned int: 42
-    ft_printf("Hex (lowercase): %x\n", u_num);         // Hex (lowercase): 2a
-    ft_printf("Hex (UPPERCASE): %X\n", u_num);         // Hex (UPPERCASE): 2A
-    ft_printf("Pointer: %p\n", ptr);                   // Pointer: 0x7ffd5e8a9c4c
-    ft_printf("Percent sign: %%\n");                   // Percent sign: %
+    // Basic usage
+    ft_printf("Character: %c\n", c);
+    ft_printf("String: %s\n", str);
+    ft_printf("Decimal: %d\n", num);
+
+    // Return value
+    count = ft_printf("Hex: %x, Pointer: %p\n", num, ptr);
+    ft_printf("Characters printed: %d\n", count);
 
     return (0);
 }
@@ -201,7 +127,7 @@ int main(void)
 
 **Compile and run:**
 ```bash
-gcc example.c -L. -lftprintf -o example
+gcc -Wall -Wextra -Werror example.c printf.a -o example
 ./example
 ```
 
@@ -209,80 +135,185 @@ gcc example.c -L. -lftprintf -o example
 
 ## 📖 Format Specifiers
 
-### Mandatory Conversions
+### Supported Conversions
 
-<details>
-<summary><b>All Supported Format Specifiers</b></summary>
+<details open>
+<summary><b>All Format Specifiers (9 conversions)</b></summary>
 
-| Specifier | Type | Description | Example |
-|-----------|------|-------------|---------|
-| `%c` | Character | Prints a single character | `ft_printf("%c", 'A')` → `A` |
-| `%s` | String | Prints a string of characters | `ft_printf("%s", "Hello")` → `Hello` |
-| `%p` | Pointer | Prints pointer address in hex with `0x` prefix | `ft_printf("%p", ptr)` → `0x7ffd5e8a9c4c` |
-| `%d` | Signed decimal | Prints a signed decimal integer | `ft_printf("%d", -42)` → `-42` |
-| `%i` | Signed decimal | Prints a signed decimal integer (same as %d) | `ft_printf("%i", 42)` → `42` |
-| `%u` | Unsigned decimal | Prints an unsigned decimal integer | `ft_printf("%u", 42)` → `42` |
-| `%x` | Hexadecimal | Prints unsigned int in lowercase hex | `ft_printf("%x", 255)` → `ff` |
-| `%X` | Hexadecimal | Prints unsigned int in UPPERCASE hex | `ft_printf("%X", 255)` → `FF` |
-| `%%` | Literal | Prints a percent sign | `ft_printf("%%")` → `%` |
+| Specifier | Type | Description | Implementation |
+|-----------|------|-------------|----------------|
+| `%c` | char | Prints a single character | `ft_putchar_fd()` |
+| `%s` | string | Prints a string | `ft_putstr_fd()` |
+| `%p` | pointer | Prints pointer address with `0x` prefix | `write(1, "0x", 2)` + `ft_putnbr_p()` |
+| `%d` | signed int | Prints signed decimal integer | `ft_putnbr_fd()` |
+| `%i` | signed int | Prints signed decimal integer (same as %d) | `ft_putnbr_fd()` |
+| `%u` | unsigned int | Prints unsigned decimal integer | `ft_putnbr_long()` |
+| `%x` | hex lowercase | Prints unsigned int in lowercase hex | `ft_putnbr_hex()` |
+| `%X` | hex uppercase | Prints unsigned int in UPPERCASE hex | `ft_putnbr_hexmay()` |
+| `%%` | literal | Prints a percent sign | `ft_putchar_fd('%', 1)` |
 
 </details>
 
 ### Return Value
 
-`ft_printf()` returns the total number of characters printed (excluding the null terminator), just like the original `printf()`.
+`ft_printf()` returns the **total number of characters printed**, matching the behavior of the original `printf()`.
 
 ```c
 int count = ft_printf("Hello, %s!\n", "World");
-// count will be 14 (including newline)
+// count = 14 (including newline)
 ```
 
 ---
 
 ## 🔧 Implementation Details
 
-### Core Components
+### Core Architecture
 
-#### Variadic Function Handling
+Your implementation uses a **two-function design**:
 
-The project uses `<stdarg.h>` macros to handle variable arguments:
-
+#### 1. Main Function: `ft_printf()`
 ```c
-#include <stdarg.h>
-
 int ft_printf(const char *format, ...)
 {
-    va_list args;
-    va_start(args, format);
+    va_list ap;
+    int     count = 0;
+    int     len = 0;
 
-    // Process format string and arguments
+    va_start(ap, format);
 
-    va_end(args);
-    return (chars_printed);
+    while (format[count])
+    {
+        if (format[count] == '%')
+        {
+            count++;
+            len += ft_puts(ap, format, count);  // Handle conversion
+            count++;
+        }
+        else
+        {
+            ft_putchar_fd(format[count], 1);   // Regular character
+            count++;
+            len++;
+        }
+    }
+
+    va_end(ap);
+    return (len);
 }
 ```
 
-#### Format String Parsing
+**Responsibilities:**
+- Iterates through format string character by character
+- Detects `%` for conversion specifiers
+- Delegates conversions to `ft_puts()`
+- Tracks and returns character count
 
-The function iterates through the format string:
-1. Regular characters are printed directly
-2. When `%` is encountered, the next character determines the conversion
-3. Appropriate conversion function is called with `va_arg()`
-4. Return value tracks total characters printed
+#### 2. Conversion Router: `ft_puts()`
+```c
+int ft_puts(va_list ap, const char *format, int count)
+{
+    int len = 0;
 
-#### Number to String Conversion
+    if (format[count] == 'c')
+        len += ft_putchar_fd(va_arg(ap, int), 1);
+    if (format[count] == 's')
+        len += ft_putstr_fd(va_arg(ap, char *), 1);
+    if (format[count] == 'p')
+    {
+        len = 2;
+        write(1, "0x", 2);
+        ft_putnbr_p(va_arg(ap, uintptr_t), 1, &len);
+    }
+    if (format[count] == 'd' || format[count] == 'i')
+        ft_putnbr_fd(va_arg(ap, int), 1, &len);
+    if (format[count] == 'u')
+        ft_putnbr_long(va_arg(ap, unsigned int), 1, &len);
+    if (format[count] == 'x')
+        ft_putnbr_hex(va_arg(ap, unsigned int), 1, &len);
+    if (format[count] == 'X')
+        ft_putnbr_hexmay(va_arg(ap, unsigned int), 1, &len);
+    if (format[count] == '%')
+        len += ft_putchar_fd('%', 1);
 
-Integers are converted to strings using custom functions:
-- **Base 10**: For `%d`, `%i`, `%u`
-- **Base 16**: For `%x`, `%X`, `%p`
-- **Recursive approach**: Handles digits from most to least significant
+    return (len);
+}
+```
 
-### Key Challenges Solved
+**Responsibilities:**
+- Routes each conversion to appropriate function
+- Extracts arguments from `va_list` with `va_arg()`
+- Accumulates character count via pointer (`int *len`)
+- Returns total characters for this conversion
 
-1. **Handling negative numbers**: Separate logic for signed integers
-2. **Pointer formatting**: Adding `0x` prefix and handling NULL pointers
-3. **Character counting**: Tracking output length accurately across all conversions
-4. **Type safety**: Proper casting and handling of different argument types
+### Helper Functions
+
+#### Character & String Output
+```c
+int ft_putchar_fd(char c, int fd);
+// Writes single char to fd, returns 1
+
+int ft_putstr_fd(char *s, int fd);
+// Writes string to fd, returns length
+```
+
+#### Number Conversions (Recursive)
+```c
+void ft_putnbr_fd(int n, int fd, int *len);
+// Signed decimal (handles negative, INT_MIN)
+
+void ft_putnbr_long(long int n, int fd, int *len);
+// Unsigned decimal (uses long for safety)
+
+void ft_putnbr_hex(unsigned int n, int fd, int *len);
+// Hex lowercase (base 16: 0-9, a-f)
+
+void ft_putnbr_hexmay(unsigned int n, int fd, int *len);
+// Hex UPPERCASE (base 16: 0-9, A-F)
+
+void ft_putnbr_p(uintptr_t n, int fd, int *len);
+// Pointer address (hex, no 0x prefix - added separately)
+```
+
+**All number functions:**
+- Use **recursion** to process digits
+- Take `int *len` parameter to track character count
+- Write directly to file descriptor 1 (stdout)
+
+### Key Design Decisions
+
+#### 1. Length Tracking with Pointers
+Instead of returning length, number functions use `int *len` parameter:
+```c
+int len = 0;
+ft_putnbr_fd(42, 1, &len);  // len is updated inside function
+return len;
+```
+
+**Advantage:** Allows recursive calls to accumulate count naturally.
+
+#### 2. Pointer Format Handling
+```c
+if (format[count] == 'p')
+{
+    len = 2;                           // Initialize with "0x" length
+    write(1, "0x", 2);                 // Write prefix manually
+    ft_putnbr_p(va_arg(ap, uintptr_t), 1, &len);  // Add hex digits
+}
+```
+
+**Why separate?** Keeps `ft_putnbr_p()` focused on hex conversion only.
+
+#### 3. Independent if Statements
+Uses multiple `if` instead of `else if`:
+```c
+if (format[count] == 'c')
+    len += ft_putchar_fd(...);
+if (format[count] == 's')
+    len += ft_putstr_fd(...);
+// No else if - each checked independently
+```
+
+**Why?** Simpler logic, easier to maintain (though less efficient).
 
 ---
 
@@ -290,33 +321,99 @@ Integers are converted to strings using custom functions:
 
 ```
 ft_printf/
-├── 📄 Makefile              # Compilation rules
-├── 📄 ft_printf.h           # Header with function prototypes
-├── 📄 ft_printf.c           # Main printf implementation
-├── 📄 ft_printf_utils.c     # Helper functions for conversions
-├── 📄 ft_print_char.c       # Character and string handlers
-├── 📄 ft_print_nbr.c        # Number conversion functions
-├── 📄 ft_print_hex.c        # Hexadecimal conversion
-├── 📄 ft_print_ptr.c        # Pointer handling
-└── 📄 README.md             # This file
+├── 📄 LICENSE                # MIT License
+├── 📄 Makefile               # Build configuration
+├── 📄 ft_printf.h            # Header with all prototypes
+├── 📄 ft_printf.c            # Main: ft_printf() + ft_puts()
+├── 📄 ft_putchar_fd.c        # Character output
+├── 📄 ft_putstr_fd.c         # String output
+├── 📄 ft_putnbr_fd.c         # Signed decimal (%d, %i)
+├── 📄 ft_putnbr_long.c       # Unsigned decimal (%u)
+├── 📄 ft_putnbr_hex.c        # Hex lowercase (%x)
+├── 📄 ft_putnbr_hexmay.c     # Hex UPPERCASE (%X)
+├── 📄 ft_putnbr_p.c          # Pointer hex (%p)
+└── 📂 Main/                  # Testing main
+    └── mainprintf.c
 ```
 
-### Makefile Rules
+### File Descriptions
 
-| Rule | Description |
-|------|-------------|
-| `make` or `make all` | Compiles the library into `libftprintf.a` |
-| `make clean` | Removes object files (`.o`) |
-| `make fclean` | Removes object files and `libftprintf.a` |
-| `make re` | Cleans and recompiles everything |
+| File | Lines | Purpose |
+|------|-------|---------|
+| `ft_printf.c` | ~80 | Main loop, format parsing, variadic handling |
+| `ft_putchar_fd.c` | ~30 | Output single character |
+| `ft_putstr_fd.c` | ~40 | Output string with NULL handling |
+| `ft_putnbr_fd.c` | ~45 | Recursive signed int output (base 10) |
+| `ft_putnbr_long.c` | ~40 | Recursive unsigned int output (base 10) |
+| `ft_putnbr_hex.c` | ~40 | Recursive hex output (lowercase) |
+| `ft_putnbr_hexmay.c` | ~40 | Recursive hex output (UPPERCASE) |
+| `ft_putnbr_p.c` | ~40 | Recursive pointer address output (hex) |
+
+### Makefile Details
+
+```makefile
+NAME = printf.a
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
+AR = ar rcs
+
+FILES = ft_printf \
+        ft_putchar_fd \
+        ft_putstr_fd \
+        ft_putnbr_p \
+        ft_putnbr_fd \
+        ft_putnbr_long \
+        ft_putnbr_hex \
+        ft_putnbr_hexmay \
+
+OBJS = $(FILES:=.o)
+```
+
+**Total:** 8 source files compiled into `printf.a`
+
+### Make Rules
+
+| Rule | Action |
+|------|--------|
+| `make` / `make all` | Compiles 8 files → `printf.a` |
+| `make clean` | Removes `.o` object files |
+| `make fclean` | Removes `.o` and `printf.a` |
+| `make re` | Equivalent to `fclean` + `all` |
 
 ---
 
 ## 🧪 Testing
 
-### Recommended Approach
+### Test File Included
 
-Compare your `ft_printf()` output directly with the original `printf()`:
+Your `Main/mainprintf.c` contains comparison tests:
+
+```c
+#include "ft_printf.h"
+#include <stdio.h>
+
+int main(void)
+{
+    char    a = 'a';
+    int     b = 1050;
+    char    *c = "deeq";
+
+    // Compare outputs
+    ft_printf("mia: c%c, s%s, d%d, x%x, p%p\n", a, c, b, b, 20);
+    printf   ("ori: c%c, s%s, d%d, x%x, p%p\n", a, c, b, b, 20);
+
+    return (0);
+}
+```
+
+**Compile and run:**
+```bash
+make
+gcc Main/mainprintf.c printf.a -o test
+./test
+```
+
+### Manual Testing Template
 
 ```c
 #include "ft_printf.h"
@@ -326,43 +423,47 @@ int main(void)
 {
     int ft_ret, printf_ret;
 
-    // Test strings
-    ft_ret = ft_printf("ft_printf: %s\n", "test");
-    printf_ret = printf("printf:    %s\n", "test");
-    printf("Return values: ft=%d, orig=%d\n\n", ft_ret, printf_ret);
+    // Test all conversions
+    ft_ret     = ft_printf("ft: %c %s %d %i %u %x %X %p %%\n", 
+                            'A', "test", -42, 42, 42, 255, 255, &ft_ret);
+    printf_ret = printf   ("or: %c %s %d %i %u %x %X %p %%\n", 
+                            'A', "test", -42, 42, 42, 255, 255, &printf_ret);
 
-    // Test numbers
-    ft_ret = ft_printf("ft_printf: %d %i %u\n", -42, 42, 42);
-    printf_ret = printf("printf:    %d %i %u\n", -42, 42, 42);
-    printf("Return values: ft=%d, orig=%d\n\n", ft_ret, printf_ret);
-
-    // Test hex
-    ft_ret = ft_printf("ft_printf: %x %X\n", 255, 255);
-    printf_ret = printf("printf:    %x %X\n", 255, 255);
-    printf("Return values: ft=%d, orig=%d\n\n", ft_ret, printf_ret);
-
-    // Test pointers
-    int n = 42;
-    ft_ret = ft_printf("ft_printf: %p\n", &n);
-    printf_ret = printf("printf:    %p\n", (void *)&n);
-    printf("Return values: ft=%d, orig=%d\n\n", ft_ret, printf_ret);
+    printf("Return values: ft=%d, orig=%d\n", ft_ret, printf_ret);
 
     return (0);
 }
 ```
 
-### Community Testers
-
-- **[Francinette](https://github.com/xicodomingues/francinette)** - Comprehensive tester for 42 projects
-- **[printfTester](https://github.com/Tripouille/printfTester)** - Specialized printf tester
-
 ### Edge Cases to Test
 
-- NULL string: `ft_printf("%s", NULL)`
-- NULL pointer: `ft_printf("%p", NULL)`
-- Zero values: `ft_printf("%d %u %x", 0, 0, 0)`
-- Negative numbers: `ft_printf("%d", INT_MIN)`
-- Mixed specifiers: `ft_printf("Mix: %c %s %d %p", 'A', "test", 42, &var)`
+```c
+// NULL string
+ft_printf("%s\n", NULL);              // Should handle gracefully
+
+// NULL pointer
+ft_printf("%p\n", NULL);              // Usually prints "0x0"
+
+// Zero values
+ft_printf("%d %u %x\n", 0, 0, 0);    // Output: 0 0 0
+
+// Negative numbers
+ft_printf("%d\n", -2147483648);       // INT_MIN
+
+// Mixed format
+ft_printf("%c%s%d%%\n", 'A', "BC", 3); // Output: ABC3%
+```
+
+### Community Testers
+
+- **[printfTester](https://github.com/Tripouille/printfTester)** - Specialized tester
+- **[Francinette](https://github.com/xicodomingues/francinette)** - Comprehensive 42 tester
+
+```bash
+# Using printfTester
+git clone https://github.com/Tripouille/printfTester.git
+cd printfTester && make m
+```
 
 ---
 
@@ -370,38 +471,72 @@ int main(void)
 
 Through this project, I gained deep understanding of:
 
-- ✅ **Variadic Functions**: Using `va_list`, `va_start()`, `va_arg()`, and `va_end()` macros
-- ✅ **Format String Parsing**: Iterating and interpreting format specifiers dynamically
-- ✅ **Type Conversion**: Converting different data types to string representations
-- ✅ **Number Base Conversion**: Implementing decimal and hexadecimal output
-- ✅ **Pointer Arithmetic**: Understanding memory addresses and their representation
-- ✅ **Return Value Management**: Tracking characters printed across multiple function calls
-- ✅ **Library Integration**: Creating a reusable library that mimics standard behavior
-- ✅ **Modular Design**: Structuring code for extensibility and maintainability
+- ✅ **Variadic Functions**: Using `va_list`, `va_start()`, `va_arg()`, `va_end()`
+- ✅ **Format String Parsing**: Character-by-character iteration and pattern matching
+- ✅ **Recursive Number Conversion**: Converting integers to different bases (10, 16)
+- ✅ **Type Casting**: Understanding integer promotion (`char` → `int` in `va_arg`)
+- ✅ **Pointer Arithmetic**: Working with `uintptr_t` for memory addresses
+- ✅ **Character Counting**: Tracking output length across multiple function calls
+- ✅ **Modular Design**: Separating concerns (parsing, conversion, output)
+- ✅ **Library Creation**: Archiving with `ar rcs` into static library
 
-### Key Challenges
+### Key Implementation Challenges
 
-1. **Understanding `va_arg()` Type Promotion**: Integer types smaller than `int` are promoted to `int`
-2. **Hexadecimal Conversion**: Implementing efficient base-16 conversion with proper casing
-3. **Pointer Formatting**: Handling platform-specific pointer representation and NULL cases
-4. **Character Counting Accuracy**: Ensuring return value matches exactly across all paths
-5. **Modular Function Design**: Breaking down logic into reusable, testable components
+1. **Recursive Digit Extraction**: Implementing base-10 and base-16 conversion recursively
+2. **Length Tracking Strategy**: Using pointer parameter vs return value
+3. **INT_MIN Handling**: Special case for -2147483648 (can't be negated directly)
+4. **Pointer Formatting**: Separating "0x" prefix from hex conversion logic
+5. **Multiple if Statements**: Understanding tradeoffs vs else-if chain
+
+### Design Insights
+
+**Recursion for Number Conversion:**
+```c
+void ft_putnbr_fd(int n, int fd, int *len)
+{
+    if (n == -2147483648)  // INT_MIN special case
+    {
+        write(fd, "-2147483648", 11);
+        *len += 11;
+        return;
+    }
+    if (n < 0)
+    {
+        write(fd, "-", 1);
+        (*len)++;
+        n = -n;
+    }
+    if (n >= 10)
+        ft_putnbr_fd(n / 10, fd, len);  // Recursive call
+
+    char c = (n % 10) + '0';
+    write(fd, &c, 1);
+    (*len)++;
+}
+```
+
+**Why recursion?**
+- Naturally processes digits left-to-right
+- Cleaner than iterative with string buffer
+- Fits the 25-line limit per function
 
 ---
 
 ## 📏 Norm Compliance
 
-This project strictly follows the **42 Norm** (Norminette v3):
+This project follows the **42 Norm** (Norminette v3):
 - ✅ Maximum 25 lines per function
 - ✅ Maximum 5 functions per file
-- ✅ No forbidden functions used (only `write`, `malloc`, `free`, `va_*` macros)
+- ✅ Allowed functions: `write`, `malloc`, `free`, `va_*` macros
+- ✅ No global variables
 - ✅ Proper variable declarations
 - ✅ No memory leaks
-- ✅ No segmentation faults or unexpected behavior
 
 ---
 
 ## 📄 License
+
+MIT License - See [LICENSE](LICENSE) file for details.
 
 This project is part of the 42 School curriculum. Feel free to use and learn from this code, but please don't copy it for your own 42 projects. Understanding comes from doing it yourself! 🚀
 
@@ -409,13 +544,11 @@ This project is part of the 42 School curriculum. Feel free to use and learn fro
 
 ## 🔗 Related Projects
 
-This library builds upon and complements:
+This library builds upon:
 
-- [libft](https://github.com/Z3n42/42_libft) - Custom C library with essential functions
-- [get_next_line](https://github.com/Z3n42/get_next_line) - Reading from file descriptors
-- [pipex](https://github.com/Z3n42/pipex) - Unix pipes implementation
-
-And will be used in future projects requiring formatted output.
+- **[libft](https://github.com/Z3n42/42_libft)** - Custom C library (though printf is standalone)
+- **[get_next_line](https://github.com/Z3n42/get_next_line)** - Line reading from FDs
+- **[fdf](https://github.com/Z3n42/fdf)** - 3D wireframe (uses printf for debugging)
 
 ---
 
