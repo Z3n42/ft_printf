@@ -22,6 +22,7 @@
 ## 📋 Table of Contents
 
 - [About the Project](#-about-the-project)
+- [Features](#-features)
 - [Installation](#%EF%B8%8F-installation)
 - [Usage](#-usage)
 - [Format Specifiers](#-format-specifiers)
@@ -45,6 +46,58 @@ Understanding how `printf()` works internally requires knowledge of:
 - **Type handling** across different data types
 - **Recursive number conversion** for different bases
 - **Character counting** for return value tracking
+
+---
+
+## ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🔧 Format Conversions
+- Character output (`%c`)
+- String handling (`%s`, NULL-safe)
+- Signed integers (`%d`, `%i`)
+- Unsigned integers (`%u`)
+- Hexadecimal (`%x`, `%X`)
+- Pointer addresses (`%p`)
+- Literal percent (`%%`)
+
+</td>
+<td width="50%">
+
+### 🚀 Implementation
+- **Variadic functions** with `<stdarg.h>`
+- **Recursive base conversion** (10, 16)
+- **Character counting** for return value
+- **Modular design** (8 source files)
+- Mimics original printf() behavior
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🎯 Core Architecture
+- Two-function design
+  - `ft_printf()`: Main loop
+  - `ft_puts()`: Conversion router
+- Helper functions for each type
+- Direct `write()` to stdout
+
+</td>
+<td width="50%">
+
+### 📦 Static Library
+- Compiles to `printf.a`
+- Makefile with standard rules
+- 8 source files + header
+- No external dependencies
+
+</td>
+</tr>
+</table>
 
 ---
 
@@ -247,16 +300,23 @@ int ft_puts(va_list ap, const char *format, int count)
 
 ### Helper Functions
 
-#### Character & String Output
+<details>
+<summary><b>Character & String Output</b></summary>
+
 ```c
 int ft_putchar_fd(char c, int fd);
 // Writes single char to fd, returns 1
 
 int ft_putstr_fd(char *s, int fd);
 // Writes string to fd, returns length
+// Handles NULL strings gracefully
 ```
 
-#### Number Conversions (Recursive)
+</details>
+
+<details>
+<summary><b>Number Conversions (Recursive)</b></summary>
+
 ```c
 void ft_putnbr_fd(int n, int fd, int *len);
 // Signed decimal (handles negative, INT_MIN)
@@ -278,6 +338,8 @@ void ft_putnbr_p(uintptr_t n, int fd, int *len);
 - Use **recursion** to process digits
 - Take `int *len` parameter to track character count
 - Write directly to file descriptor 1 (stdout)
+
+</details>
 
 ### Key Design Decisions
 
@@ -324,14 +386,17 @@ ft_printf/
 ├── 📄 LICENSE                # MIT License
 ├── 📄 Makefile               # Build configuration
 ├── 📄 ft_printf.h            # Header with all prototypes
-├── 📄 ft_printf.c            # Main: ft_printf() + ft_puts()
-├── 📄 ft_putchar_fd.c        # Character output
-├── 📄 ft_putstr_fd.c         # String output
-├── 📄 ft_putnbr_fd.c         # Signed decimal (%d, %i)
-├── 📄 ft_putnbr_long.c       # Unsigned decimal (%u)
-├── 📄 ft_putnbr_hex.c        # Hex lowercase (%x)
-├── 📄 ft_putnbr_hexmay.c     # Hex UPPERCASE (%X)
-├── 📄 ft_putnbr_p.c          # Pointer hex (%p)
+├── 📄 README.md              # This file
+│
+├── ft_printf.c           # Main: ft_printf() + ft_puts()
+├── ft_putchar_fd.c       # Character output
+├── ft_putstr_fd.c        # String output
+├── ft_putnbr_fd.c        # Signed decimal (%d, %i)
+├── ft_putnbr_long.c      # Unsigned decimal (%u)
+├── ft_putnbr_hex.c       # Hex lowercase (%x)
+├── ft_putnbr_hexmay.c    # Hex UPPERCASE (%X)
+├── ft_putnbr_p.c         # Pointer hex (%p)
+│
 └── 📂 Main/                  # Testing main
     └── mainprintf.c
 ```
@@ -379,6 +444,9 @@ OBJS = $(FILES:=.o)
 | `make clean` | Removes `.o` object files |
 | `make fclean` | Removes `.o` and `printf.a` |
 | `make re` | Equivalent to `fclean` + `all` |
+
+**Compilation flags:** `-Wall -Wextra -Werror` (all warnings as errors)  
+**Archiver:** `ar rcs printf.a *.o` (creates static library)
 
 ---
 
@@ -435,6 +503,12 @@ int main(void)
 }
 ```
 
+**Compile:**
+```bash
+gcc -Wall -Wextra -Werror test.c printf.a -o test
+./test
+```
+
 ### Edge Cases to Test
 
 ```c
@@ -463,13 +537,16 @@ ft_printf("%c%s%d%%\n", 'A', "BC", 3); // Output: ABC3%
 # Using printfTester
 git clone https://github.com/Tripouille/printfTester.git
 cd printfTester && make m
+
+# Using Francinette
+cd ~/ft_printf && francinette
 ```
 
 ---
 
 ## 💡 What I Learned
 
-Through this project, I gained deep understanding of:
+Through this project, deep understanding was gained in:
 
 - ✅ **Variadic Functions**: Using `va_list`, `va_start()`, `va_arg()`, `va_end()`
 - ✅ **Format String Parsing**: Character-by-character iteration and pattern matching
